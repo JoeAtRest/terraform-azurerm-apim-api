@@ -17,7 +17,7 @@ Include the module in you main.tf file along with the variables you need to pass
 
 ```hcl
 module "terraform-apim-api" {
-  source = ""
+  source  = "JoeAtRest/apim-api/azurerm"
   subscription_prefix         = var.subscription_prefix
   location                    = var.location
   apim_name                   = var.apim_name
@@ -53,7 +53,7 @@ terraform {
 }
 
 module "terraform-apim-api" {
-  source = ""
+  source  = "JoeAtRest/apim-api/azurerm"
   
   subscription_prefix         = "dev"
   location                    = "uks"
