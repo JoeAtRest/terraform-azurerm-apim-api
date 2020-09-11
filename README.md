@@ -30,8 +30,6 @@ terraform {
 module "terraform-apim-api" {
   source  = "JoeAtRest/apim-api/azurerm"
   
-  subscription_prefix         = "dev"
-  location                    = "uks"
   apim_name                   = "my-test-apim"
   apim_resource_group         = "my-test-rg"
   

@@ -1,13 +1,3 @@
-variable "subscription_prefix" {
-  type        = string
-  description = "The subscription prefix. E.g. the 'dev'."
-}
-
-variable "location_prefix" {
-  type        = string
-  description = "The location prefix. E.g. the Azure location uksouth has the prefix 'uks'"
-}
-
 variable "apim_name" {
   type        = string
   description = "The name of the API Management instance containg the API to manage"
