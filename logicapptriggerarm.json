@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicApp": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "logicApp": {
+            "name": "[parameters('logicApp')]",
+            "trigger": "manual"
+        },
+        "resourceId": "[resourceId('Microsoft.Logic/workflows/triggers', variables('logicApp').name, variables('logicApp').trigger)]",
+        "apiVersion": "[providers('Microsoft.Logic', 'workflows').apiVersions[0]]"
+    },
+    "resources": [],
+    "outputs": {
+        "endpointUrl": {
+            "type": "string",
+            "value": "[listCallbackUrl(variables('resourceId'), variables('apiVersion')).value]"
+        },
+        "path": {
+            "type": "string",
+            "value": "[listCallbackUrl(variables('resourceId'), variables('apiVersion')).basePath]"
+        },
+        "querystring": {
+            "type": "string",
+            "value": "[concat('api-version=', variables('apiVersion'), '&sp=', uriComponent(listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sp), '&sv=', listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sv, '&sig=', listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sig)]"
+        },
+        "sasToken": {
+            "type": "string",
+            "value": "[concat('sp=', uriComponent(listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sp), '&sv=', listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sv, '&sig=', listCallbackUrl(variables('resourceId'), variables('apiVersion')).queries.sig)]"
+        }
+    }
+}
