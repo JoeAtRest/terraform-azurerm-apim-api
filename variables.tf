@@ -53,6 +53,7 @@ variable "api_versionset_displayname" {
 variable "api_is_versioned" {
   type        = bool
   description = "Indicates whether this API is versioned"
+  default     = false
 }
 
 variable "apim_product" {

@@ -10,37 +10,12 @@ This module deploys a single API to Azure API Manager with the following charact
 - Logic app backends, but you must create your policy files manually to support this
 - Function app backends, but you must create your policy files manually to support this
 - Named values can be created
+- API versions can be associated with a product
+- Portal users and groups can be managed and assigned to products
 
 ## Simple Usage
 
-Include the module in you main.tf file along with the variables you need to pass in
-
-```hcl
-module "terraform-apim-api" {
-  source  = "JoeAtRest/apim-api/azurerm"
-  subscription_prefix         = var.subscription_prefix
-  location                    = var.location
-  apim_name                   = var.apim_name
-  apim_resource_group         = var.apim_resource_group
-  api_display_name            = var.api_display_name
-  api_name                    = var.api_name
-  api_path                    = var.api_path
-  api_service_url             = var.api_service_url
-  api_versionset_name         = var.api_versionset_name
-  api_versionset_displayname  = var.api_versionset_displayname
-  api_is_versioned            = var.api_is_versioned
-  
-  api-versions                = var.api-versions
-  api-operations              = var.api-operations
-  api-policy                  = var.api-policy
-  operation-policies          = var.operation-policies
-  operation-fa-backends       = var.operation-fa-backends
-  operation-la-backends       = var.operation-la-backends
-  namedvalues                 = var.namedvalues
-}
-```
-
-You can configure the module directly in the main.tf, like in this example configuration. This example pre-supposes that the API Manager referred  to already exists, as do the logic and function apps referenced, as well as the policy files.
+Include the module in you main.tf file and set the parameters
 
 ```hcl
 provider "azurerm" { 
@@ -123,6 +98,46 @@ module "terraform-apim-api" {
   }]
 
   namedvalues                 = []
+  
+  apim_product        =[{  
+    description           = "Product for core apis"
+    product_id            = "prod-coreapi"
+    display_name          = "Core API"
+    approval_required     = false
+    published             = true
+    subscription_required = true
+  }]  
+
+  apim_users          =[{  
+    user_id               = "UserBob"
+    first_name            = "Bob"
+    last_name             = "Howard"
+    email                 = "bofh@thelaundry.uk.gov"
+    confirmation          = "yes"
+  },
+  {  
+    user_id               = "UserPeterFred"
+    first_name            = "Peter Fred"
+    last_name             = "Young"
+    email                 = "pfy@thelaundry.uk.gov"
+    confirmation          = "yes"
+  }]
+
+  apim_groups     = [{  
+    display_name  = "Computational Demonologists"
+    name          = "compdemon"
+    description   = "Classified"
+  }]  
+
+  apim_group_users = [{  
+    user_id     = "UserBob"
+    group_name  = "compdemon"
+  }]
+
+  apim_product_group = [{  
+    product_id  = "prod-coreapi"
+    group_name  = "compdemon"
+  }]
 }
 ```
 
